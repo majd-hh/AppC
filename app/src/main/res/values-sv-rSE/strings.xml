@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Corona Tracker</string>
+    <string name="MyPageButton">Min sida </string>
+    <string name="DashBoardButton">Dashb.</string>
+    <string name="LanguageButton">Språk.</string>
+    <string name="LogOutButton">Logga ut</string>
+    <string name = "LogInButton">Logga in</string>
+    <string name = "SignUpButton">Registera</string>
+    <string name = "BookTimeButton">Boka tid</string>
+    <string name = "ReBookTimeButton">omboka tid</string>
+    <string name = "CancelTimeButton">avboka tid</string>
+    <string name = "BookedTimeButton">Bokade tider</string>
+    <string name = "DigitalPassButton">Digitalt reseintyg</string>
+    <string name ="PassWordLogInText">Lösenord</string>
+    <string name = "EmailLogInText">E-post</string>
+    <string name ="FirstNameSignUpHint">Förnamn</string>
+    <string name ="LastNameSignUpHint">Efternamn</string>
+    <string name ="EmailSignUpHint">E-post</string>
+    <string name ="PassSignUpHint">Lösenord</string>
+    <string name ="DateSignUpHint">Födelsedatum</string>
+    <string name ="MobileSignUpHint">telefonnummer</string>
+    <string name ="CountrySignUpHint">Land</string>
+    <string name ="CitySignUpHint">Stad</string>
+    <string name="ForgotPassword">Glömt dit lösenord?</string>
+    <string name="userregistered">Ny användare registrerades</string>
+</resources>

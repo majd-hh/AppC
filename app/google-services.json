@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "3425616559",
+    "firebase_url": "https://logindatabase-47c13-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "logindatabase-47c13",
+    "storage_bucket": "logindatabase-47c13.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:3425616559:android:d616dc687addaead760a5a",
+        "android_client_info": {
+          "package_name": "com.example.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "3425616559-jskiq6icgv6fa0betlu8kjkmu5o3i5pr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDULKkXCJRQZ_d0Pl8U8ulr92mxoLMy-8o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "3425616559-jskiq6icgv6fa0betlu8kjkmu5o3i5pr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
