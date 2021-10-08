@@ -7,17 +7,17 @@
     tools:context=".testttt">
 
     <Spinner
-        android:id="@+id/planets_spinner"
+        android:id="@+id/country_spinnerSE"
         android:layout_width="106dp"
         android:layout_height="37dp"
-        app:layout_constraintEnd_toStartOf="@+id/product_spinner"
+        app:layout_constraintEnd_toStartOf="@+id/product_spinnerSE"
         app:layout_constraintHorizontal_bias="0.301"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
     <Spinner
-        android:id="@+id/age_spinner"
+        android:id="@+id/age_spinnerSE"
         android:layout_width="120dp"
         android:layout_height="34dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,11 +25,11 @@
         tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
     <Spinner
-        android:id="@+id/product_spinner"
+        android:id="@+id/product_spinnerSE"
         android:layout_width="113dp"
         android:layout_height="37dp"
         android:layout_marginEnd="36dp"
-        app:layout_constraintEnd_toStartOf="@+id/age_spinner"
+        app:layout_constraintEnd_toStartOf="@+id/age_spinnerSE"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
@@ -38,7 +38,7 @@
         android:layout_height="30dp"
         app:layout_constraintBottom_toTopOf="@+id/scrollView2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/product_spinner"
+        app:layout_constraintTop_toBottomOf="@+id/product_spinnerSE"
         app:layout_constraintVertical_bias="0.291" />
 
     <ScrollView
@@ -57,7 +57,7 @@
             android:orientation="vertical">
 
             <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/bar_chart1"
+                android:id="@+id/bar_chartSE1"
                 android:layout_width="match_parent"
                 android:layout_height="519dp" />
 
@@ -66,7 +66,7 @@
                 android:layout_height="30dp"/>
 
             <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/bar_chart2"
+                android:id="@+id/bar_chartSE2"
                 android:layout_width="match_parent"
                 android:layout_height="519dp" />
 

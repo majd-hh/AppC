@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Corona Tracker</string>
     <string name="MyPageButton">My page </string>
-    <string name="DashBoardButton">Dashboard</string>
+    <string name="Covid_state" translatable="false">Covid state</string>
     <string name="LanguageButton">Language</string>
     <string name="LogOutButton">Log out</string>
     <string name="LogInButton">Log in</string>
@@ -71,9 +71,23 @@
 
     <string-array name="Product_array">
         <item>Product</item>
+        <item>ALL</item>
         <item>MOD</item>
         <item>COM</item>
         <item>AZ</item>
+    </string-array>
+
+    <string-array name="region_sweden">
+        <item>Sweden</item>
+        <item>Whole Sweden</item>
+        <item>South Sweden</item>
+        <item>Småland</item>
+        <item>Stockholm</item>
+        <item>West Sweden</item>
+        <item>East Middle Sweden</item>
+        <item>North Middle Sweden</item>
+        <item>Middle Norrland</item>
+        <item>Upper Norrland</item>
     </string-array>
     <string name="action_settings" translatable="false">something here</string>
 

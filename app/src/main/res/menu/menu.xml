@@ -3,16 +3,21 @@
     <item android:title="@string/MyPageButton"
         android:id="@+id/menuMyPage"/>
 
-    <item android:title="@string/DashBoardButton"
-        android:id="@+id/menuDashboard"/>
+    <item android:title="Dashboard"
+        android:id="@+id/Dashboard">
+    <menu>
+        <item  android:title="Vaccine EU"
+                    android:id="@+id/Vaccine_EU"/>
+        <item  android:title="Vaccine SE"
+                android:id="@+id/Vaccine_SE"/>
 
-    <item android:title="VaccineDashboard"
-        android:id="@+id/VaccineDashboard"/>
+        <item android:title="Covid state"
+            android:id="@+id/Covid_state"/>
 
-    <item android:title="Vaccine"
-          android:id="@+id/Vaccine"/>
+    </menu>
+        </item>
 
-    <item android:title="@string/LanguageButton"
+        <item android:title="@string/LanguageButton"
         android:id="@+id/menuLanguage"/>
     <item android:title="@string/LogOutButton"
             android:id="@+id/menuLogout"/>
