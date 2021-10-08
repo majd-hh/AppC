@@ -33,7 +33,6 @@ public class VaccinSeDash extends AppCompatActivity {
     Button buttonGet;
     String countryName="", AgeGroup="",vacinType="",SwedenCountis="" ;
     int[] colorClassArray = new int[]{Color.GREEN,Color.YELLOW,Color.BLUE};
-//hej hej
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
