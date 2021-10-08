@@ -1,5 +1,5 @@
 package com.example.app;
-
+//by majed
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -73,7 +73,7 @@ public class VaccinSeDash extends AppCompatActivity {
                     vaccinSweden(vaccineSweden,AgeGroup,SwedenCountis);
 
                 }
-                //jhdjfjlyflyjflflfluf
+
                 else {
 
                     String item = adapterView.getItemAtPosition(i).toString();
