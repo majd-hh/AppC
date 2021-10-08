@@ -73,6 +73,7 @@ public class VaccinSeDash extends AppCompatActivity {
                     vaccinSweden(vaccineSweden,AgeGroup,SwedenCountis);
 
                 }
+                //jhdjfjlyflyjflflfluf
                 else {
 
                     String item = adapterView.getItemAtPosition(i).toString();
