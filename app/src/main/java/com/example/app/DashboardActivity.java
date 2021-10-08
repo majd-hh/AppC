@@ -17,6 +17,10 @@ public class DashboardActivity extends AppCompatActivity {
     Button buttonView;
     EditText cityInput;
 
+    public void moveToMain(){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
     public void moveToLogIn(){
         Intent intent  = new Intent(this, MainActivity.class);
         startActivity(intent);
@@ -26,15 +30,16 @@ public class DashboardActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MyPageAcitvity.class);
         startActivity(intent);
     }
-    public void moveToVaccineDashboard(){
+    public void moveToVaccineEU(){
         Intent intent = new Intent(this, vaccineDashboard.class);
         startActivity(intent);
     }
 
-    public void moveToVaccine(){
-        Intent intent = new Intent(this, Vaccine.class);
+    public void moveToVaccinSE(){
+        Intent intent = new Intent(this, VaccinSeDash.class);
         startActivity(intent);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,20 +81,20 @@ public class DashboardActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected( MenuItem item){
         switch (item.getItemId()){
             case R.id.menuMyPage:
-                moveToMyPage();
                 break;
-            case R.id.menuDashboard:
+            case R.id.Dashboard:
                 break;
-            case R.id.VaccineDashboard:
-                moveToVaccineDashboard();
+            case R.id.Vaccine_EU:
+                moveToVaccineEU();
                 break;
-            case R.id.Vaccine:
-                moveToVaccine();
+            case R.id.Vaccine_SE:
+                moveToVaccinSE();
                 break;
-            case R.id.menuLanguage:
+            case R.id.Covid_state:
+                //moveToCOVID();
                 break;
             case R.id.menuLogout:
-                moveToLogIn();
+                moveToMain();
                 break;
         }
         return super.onOptionsItemSelected(item);

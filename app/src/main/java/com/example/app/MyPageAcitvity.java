@@ -12,23 +12,24 @@ public class MyPageAcitvity extends AppCompatActivity {
 
 
 
-    public void moveToDashboard(){
+    public void moveToCOVID(){
         Intent intent = new Intent(this, DashboardActivity.class);
         startActivity(intent);
     }
 
-    public void moveToVaccineDashboard(){
+    public void moveToVaccineEU(){
         Intent intent = new Intent(this, vaccineDashboard.class);
         startActivity(intent);
     }
 
-    public void moveToVaccine(){
-        Intent intent = new Intent(this, vaccineDashboard.class);
-        startActivity(intent);
-    }
 
     public void moveToMain(){
         Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    public void moveToVaccinSE(){
+        Intent intent = new Intent(this, VaccinSeDash.class);
         startActivity(intent);
     }
 
@@ -52,16 +53,16 @@ public class MyPageAcitvity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.menuMyPage:
                 break;
-            case R.id.menuDashboard:
-                    moveToDashboard();
+            case R.id.Dashboard:
                 break;
-            case R.id.VaccineDashboard:
-                moveToVaccineDashboard();
+            case R.id.Vaccine_EU:
+                moveToVaccineEU();
                 break;
-            case R.id.Vaccine:
-                moveToVaccine();
+            case R.id.Vaccine_SE:
+                moveToVaccinSE();
                 break;
-            case R.id.menuLanguage:
+            case R.id.Covid_state:
+                moveToCOVID();
                 break;
             case R.id.menuLogout:
                 moveToMain();

@@ -74,7 +74,11 @@ public class VaccinSeDash extends AppCompatActivity {
 
                 }
                 else {
+<<<<<<< HEAD
                         AgeGroup="";
+=======
+
+>>>>>>> origin/master
                     String item = adapterView.getItemAtPosition(i).toString();
                     SwedenCountis=item;
                     switch (item){
@@ -83,7 +87,11 @@ public class VaccinSeDash extends AppCompatActivity {
                         case "South Sweden": SwedenCountis= "SE22";
                             break;
                         case "Småland": SwedenCountis= "SE21";
+<<<<<<< HEAD
                             break;///////////////////////tack
+=======
+                            break; /////aboooooooooood
+>>>>>>> origin/master
                         case "Stockholm": SwedenCountis= "SE11";
                             break;
                         case "West Sweden": SwedenCountis= "SE23";
@@ -109,6 +117,7 @@ public class VaccinSeDash extends AppCompatActivity {
             }
         });
 
+<<<<<<< HEAD
 
         spinnerProduct.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -123,12 +132,27 @@ public class VaccinSeDash extends AppCompatActivity {
                 }
             }
 
+=======
+        spinnerAge.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(adapterView.getItemAtPosition(i).toString().equals("Age")){
+
+                }
+                else {
+                    AgeGroup = adapterView.getItemAtPosition(i).toString();
+                    Toast.makeText(adapterView.getContext(), "Selected " + AgeGroup, Toast.LENGTH_SHORT).show();
+                }
+
+            }
+>>>>>>> origin/master
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
         });
 
+<<<<<<< HEAD
         spinnerAge.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -140,12 +164,32 @@ public class VaccinSeDash extends AppCompatActivity {
                 }
 
             }
+=======
+        spinnerProduct.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(adapterView.getItemAtPosition(i).toString().equals("Product")){
+                    vacinType="";
+                }
+                else {
+                    vacinType = adapterView.getItemAtPosition(i).toString();
+                    Toast.makeText(adapterView.getContext(), "Selected " + vacinType, Toast.LENGTH_SHORT).show();
+
+                }
+            }
+
+>>>>>>> origin/master
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
         });
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> origin/master
         buttonGet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
