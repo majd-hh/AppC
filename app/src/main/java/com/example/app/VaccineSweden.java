@@ -75,6 +75,7 @@ public class VaccineSweden {
                                     if (getdata.getNumberDosesReceived().equals("")) {
                                         getdata.setNumberDosesReceived("0");
                                     }
+                                    getdata.setRegion(Vaccineinfo.getString("Region"));
                                     getdata.setPopulation(Vaccineinfo.getInt("Population"));
                                     getdata.setReportingCountry(Vaccineinfo.getString("ReportingCountry"));
                                     getdata.setTargetGroup(Vaccineinfo.getString("TargetGroup"));
@@ -95,6 +96,7 @@ public class VaccineSweden {
                                         if (getdata.getNumberDosesReceived().equals("")) {
                                             getdata.setNumberDosesReceived("0");
                                         }
+                                        getdata.setRegion(Vaccineinfo.getString("Region"));
                                         getdata.setPopulation(Vaccineinfo.getInt("Population"));
                                         getdata.setReportingCountry(Vaccineinfo.getString("ReportingCountry"));
                                         getdata.setTargetGroup(Vaccineinfo.getString("TargetGroup"));
