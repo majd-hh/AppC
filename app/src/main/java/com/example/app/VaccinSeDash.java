@@ -1,5 +1,4 @@
 package com.example.app;
-//by majed
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -83,7 +82,7 @@ public class VaccinSeDash extends AppCompatActivity {
                         case "South Sweden": SwedenCountis= "SE22";
                             break;
                         case "Småland": SwedenCountis= "SE21";
-                            break; /////aboooooooooood
+                            break;
                         case "Stockholm": SwedenCountis= "SE11";
                             break;
                         case "West Sweden": SwedenCountis= "SE23";
@@ -172,10 +171,17 @@ public class VaccinSeDash extends AppCompatActivity {
             @Override
             public void onResponse(List<VaccineData> VaccineData) {
                 int [] doss1, doss2;
+                int sum=0,sumdoss1=0,sumdoss2=0;
                 System.out.println("::::::::Size when choice  "+ VaccineData.size());
                 doss1=Doss1(VaccineData); //get number of doss1 for each week.
                 doss2=Doss2(VaccineData); //get number of doss1 for each week.
+
+
+
                 ArrayList<String> veckoName = new ArrayList<>(veckor(VaccineData)); //get weeks name
+                NumberDosesReceve( VaccineData);
+                NumberDoses1(VaccineData);
+                //NumberDoses2(VaccineData);
                 swedenChart(veckoName,doss1,doss2); // chart funcktion to represent Vaccine data
 
             }
@@ -264,6 +270,36 @@ public class VaccinSeDash extends AppCompatActivity {
 
     }
 
+    private  int NumberDosesReceve(List<VaccineData> VaccineData){
+        int suman=0;
+        for (int i=0;i<VaccineData.size();i++){
+            suman = (suman+ Integer.parseInt(VaccineData.get(i).getNumberDosesReceived()));
+        }
+        System.out.println(":::::::Summan:::::"+suman);
+        return suman;
+    }
+    private  int NumberDoses1(List<VaccineData> VaccineData){
+        int suman=0,sum1=0,sum2=0;
+        for (int i=0;i<VaccineData.size();i++){
+            if ( (VaccineData.get(i).getRegion().equals("SE")) ){
+                sum1 = sum1+ VaccineData.get(i).getFirstDose();
+                sum2 = sum2+ VaccineData.get(i).getSecondDose();
+            }
+
+        }
+        suman=sum1+sum2;
+        System.out.println(":::::::Summan av doss  :::::"+suman);
+        return suman;
+    }
+
+    private  int NumberDoses2(List<VaccineData> VaccineData){
+        int suman=0;
+        for (int i=0;i<VaccineData.size();i++){
+            suman = suman+ VaccineData.get(i).getSecondDose();
+        }
+        System.out.println(":::::::Summan doss 2:::::"+suman);
+        return suman;
+    }
 
     private  int [] NumberDosesReceived(List<VaccineData> VaccineData){
         int [] sumDoss = new int[100];
