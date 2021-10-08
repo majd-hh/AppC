@@ -281,7 +281,7 @@ public class VaccinSeDash extends AppCompatActivity {
     private  int NumberDoses1(List<VaccineData> VaccineData){
         int suman=0,sum1=0,sum2=0;
         for (int i=0;i<VaccineData.size();i++){
-            if ( (VaccineData.get(i).getRegion().equals("SE")) ){
+            if ( (VaccineData.get(i).getRegion() != null )&&(VaccineData.get(i).getRegion().equals("SE")) ){
                 sum1 = sum1+ VaccineData.get(i).getFirstDose();
                 sum2 = sum2+ VaccineData.get(i).getSecondDose();
             }
