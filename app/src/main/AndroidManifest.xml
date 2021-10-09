@@ -18,9 +18,6 @@
             android:name=".VaccinSeDash"
             android:exported="true" />
         <activity
-            android:name=".testttt"
-            android:exported="true" />
-        <activity
             android:name=".Vaccine"
             android:exported="true" />
         <activity
