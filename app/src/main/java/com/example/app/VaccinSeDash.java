@@ -41,6 +41,7 @@ public class VaccinSeDash extends AppCompatActivity {
         buttonGet= findViewById(R.id.buttonGetSE);
 
         final VaccineSweden vaccineSweden= new VaccineSweden(VaccinSeDash.this);
+        final swedenVaccineData swedenVaccineData= new swedenVaccineData(VaccinSeDash.this);
 
         spinnerAge = findViewById(R.id.age_spinnerSE);
         spinnerProduct = findViewById(R.id.product_spinnerSE);
@@ -67,40 +68,8 @@ public class VaccinSeDash extends AppCompatActivity {
         spinnerSweden.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(adapterView.getItemAtPosition(i).toString().equals("Sweden")){
-                    SwedenCountis="SE";
-                    vaccinSweden(vaccineSweden,AgeGroup,SwedenCountis);
-
-                }
-
-                else {
-
-                    String item = adapterView.getItemAtPosition(i).toString();
-                    SwedenCountis=item;
-                    switch (item){
-                        case "Whole Sweden": SwedenCountis= "SE";
-                            break;
-                        case "South Sweden": SwedenCountis= "SE22";
-                            break;
-                        case "Småland": SwedenCountis= "SE21";
-                            break;
-                        case "Stockholm": SwedenCountis= "SE11";
-                            break;
-                        case "West Sweden": SwedenCountis= "SE23";
-                            break;
-                        case "East Middle Sweden": SwedenCountis= "SE12";
-                            break;
-                        case "North Middle Sweden": SwedenCountis= "SE31";
-                            break;
-                        case "Middle Norrland": SwedenCountis= "SE32";
-                            break;
-                        case "Upper Norrland": SwedenCountis= "SE33";
-                            break;
-
-                    }
-                    Toast.makeText(adapterView.getContext(), "Selected " + item, Toast.LENGTH_SHORT).show();
-                }
-
+                String item = adapterView.getItemAtPosition(i).toString();
+                SwedenCountis=item;
             }
 
             @Override
@@ -147,19 +116,46 @@ public class VaccinSeDash extends AppCompatActivity {
         });
 
 
-
         buttonGet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                if (!(SwedenCountis.equals("SE"))){
-                    AgeGroup="ALL";
-                }
-                vaccinSweden(vaccineSweden,AgeGroup,SwedenCountis);
+                //vaccinSweden(vaccineSweden,AgeGroup,SwedenCountis);
+                vaccineDistr(swedenVaccineData,SwedenCountis);
             }
         });
 
     }
+
+    public void vaccineDistr(swedenVaccineData swedenVaccineData,String counties){
+        swedenVaccineData.getVaccineDistributedSE(counties, new swedenVaccineData.VolleyResponseListener() {
+            @Override
+            public void onError(String message) {
+                Toast.makeText(VaccinSeDash.this,"returned wrong", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onResponse(List<VaccineData> VaccineData) {
+                //int [] doss1, doss2;
+                //int sum=0,sumdoss1=0,sumdoss2=0;
+                System.out.println("::::::::Counteia "+ counties);
+                System.out.println("::::::::Size when choice  "+ VaccineData.size());
+               // System.out.println("::::::::SWEDEN "+ VaccineData);
+
+                //doss1=Doss1(VaccineData); //get number of doss1 for each week.
+                //doss2=Doss2(VaccineData); //get number of doss1 for each week.
+
+                //ArrayList<String> veckoName = new ArrayList<>(veckor(VaccineData)); //get weeks name
+               NumberDosesReceve(VaccineData,SwedenCountis);
+                //NumberDoses1(VaccineData,SwedenCountis);
+                //NumberDoses2(VaccineData);
+                //swedenChart(veckoName,doss1,doss2); // chart funcktion to represent Vaccine data
+                //NumberDosesReceived(VaccineData);
+            }
+        });
+
+    }
+
 
     public void vaccinSweden(VaccineSweden vaccineSweden,String Agg,String counties){
         vaccineSweden.getVaccineData(Agg, counties, new Vaccineinfo.VolleyResponseListener() {
@@ -189,6 +185,9 @@ public class VaccinSeDash extends AppCompatActivity {
         });
 
     }
+
+
+
 
     @SuppressLint("UseCompatLoadingForDrawables")
     public void swedenChart(List<String> xAxisLabel,int[] dos1,int []dos2){
@@ -273,14 +272,21 @@ public class VaccinSeDash extends AppCompatActivity {
 
     private  int NumberDosesReceve(List<VaccineData> VaccineData,String countis){
         int suman=0;
+        System.out.println("countis i NumerdossssRE"+countis);
         for (int i=0;i<VaccineData.size();i++){
             if ( (VaccineData.get(i).getRegion().equals(countis)) ) {
-                suman = (suman + Integer.parseInt(VaccineData.get(i).getNumberDosesReceived()));
+                suman =  Integer.parseInt(VaccineData.get(i).getNumberDosesReceived());
+                System.out.println("At"+i+"Region"+VaccineData.get(i).getRegion()+" getNumberDosesReceived:"+VaccineData.get(i).getNumberDosesReceived()+" Vecka: "+VaccineData.get(i).getYearWeekISO());
             }
         }
         System.out.println(":::::::Summan DIs:::::"+suman);
         return suman;
     }
+
+
+
+
+
     private  int NumberDoses1(List<VaccineData> VaccineData,String countis){
         int suman=0,sum1=0,sum2=0;
         for (int i=0;i<VaccineData.size();i++){
@@ -313,6 +319,7 @@ public class VaccinSeDash extends AppCompatActivity {
             for (int j=i-1;j<i;j++) {
                 if ((VaccineData.get(j).getYearWeekISO().equals(VaccineData.get(i).getYearWeekISO()))) {
                     sumDoss[VD] = (sumDoss[VD] + Integer.parseInt(VaccineData.get(j).getNumberDosesReceived()));
+                    System.out.println("At"+j+"Region"+VaccineData.get(j).getRegion()+" sumDoss[VD]:"+sumDoss[j]+"Vecka: "+VaccineData.get(i).getYearWeekISO());
                 }
                 if (!(VaccineData.get(j).getYearWeekISO().equals(VaccineData.get(i).getYearWeekISO()))) {
                     VD++;

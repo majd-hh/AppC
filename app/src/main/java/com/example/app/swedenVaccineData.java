@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class swedenVaccineData {
-
     String url="https://hex.cse.kau.se/~abdualna100/JSON/data.json";
     Context context;
     public swedenVaccineData(Context context) {
@@ -127,94 +126,40 @@ public class swedenVaccineData {
 
 
     public void getVaccineDistributedSE(String counties,com.example.app.swedenVaccineData.VolleyResponseListener volleyResponseListener){
-        String finalCounties="",AGE="";
 
-        if (counties.isEmpty()||counties.equals("SE")){
-            finalCounties="Sweden";
-        }
-        else {
-            finalCounties=counties;
-        }
-
-
-        System.out.println("\n \n "+ "*****Country innan:::  "+"  AGE:: " +AGE+"  finalCounties:: " + counties);
         //get json object
         List<VaccineData> ViccenReport = new ArrayList<>();
-        String finalAGE1 = AGE;
-        String finalCounties1 = finalCounties;
+        String finalcounteis=counties;
         JsonObjectRequest request=new JsonObjectRequest(Request.Method.GET,url,null ,new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    JSONArray ViccenData= response.getJSONArray("records");
+                    JSONArray ViccenData= response.getJSONArray("Vaccinationer tidsserie");
                     System.out.println("\n \n "+ "*********** VaccineData Array i info:::  " +ViccenData.length()+"************\n \n  ");
-                    System.out.println("\n \n "+ "*****FCountry:::  "+"  finalAGE:: " + finalAGE1 +"  finalVaccine:: " + finalCounties1);
+                    System.out.println("\n \n "+ "***********finalcounteis  json func:::  " +finalcounteis+"************\n \n  ");
+
                     //get data
                     for (int i=0;i<ViccenData.length();i++){
                         VaccineData getdata = new VaccineData();
                         JSONObject Vaccineinfo = (JSONObject) ViccenData.get(i);
 
-                        if ( ( Vaccineinfo.getString("ReportingCountry").equals("SE") ) ) {
-
-                            if (  (Vaccineinfo.getString("TargetGroup").equals(finalAGE1)) )
-                            {
-
-                                if (finalCounties1.equals("Sweden") )
-                                {
-                                    getdata.setYearWeekISO(Vaccineinfo.getString("YearWeekISO"));
-                                    getdata.setFirstDose(Vaccineinfo.getInt("FirstDose"));
-                                    getdata.setSecondDose(Vaccineinfo.getInt("SecondDose"));
-                                    getdata.setNumberDosesReceived(Vaccineinfo.getString("NumberDosesReceived"));
-                                    if (getdata.getNumberDosesReceived().equals("")) {
-                                        getdata.setNumberDosesReceived("0");
-                                    }
-                                    getdata.setRegion(Vaccineinfo.getString("Region"));
-                                    getdata.setPopulation(Vaccineinfo.getInt("Population"));
-                                    getdata.setReportingCountry(Vaccineinfo.getString("ReportingCountry"));
-                                    getdata.setTargetGroup(Vaccineinfo.getString("TargetGroup"));
-                                    getdata.setVaccine(Vaccineinfo.getString("Vaccine"));
-                                    getdata.setDenominator(Vaccineinfo.getString("Denominator"));
-                                    ViccenReport.add(getdata);
-                                }
-
-
-
-                                if ( (Vaccineinfo.getString("Region").equals(finalCounties1)) )
-                                {
-                                    getdata.setYearWeekISO(Vaccineinfo.getString("YearWeekISO"));
-                                    getdata.setFirstDose(Vaccineinfo.getInt("FirstDose"));
-                                    getdata.setFirstDoseRefused("");
-                                    getdata.setSecondDose(Vaccineinfo.getInt("SecondDose"));
-                                    getdata.setNumberDosesReceived(Vaccineinfo.getString("NumberDosesReceived"));
-                                    if (getdata.getNumberDosesReceived().equals("")) {
-                                        getdata.setNumberDosesReceived("0");
-                                    }
-                                    getdata.setRegion(Vaccineinfo.getString("Region"));
-                                    getdata.setPopulation(Vaccineinfo.getInt("Population"));
-                                    getdata.setReportingCountry(Vaccineinfo.getString("ReportingCountry"));
-                                    getdata.setTargetGroup(Vaccineinfo.getString("TargetGroup"));
-                                    getdata.setVaccine(Vaccineinfo.getString("Vaccine"));
-                                    getdata.setDenominator(Vaccineinfo.getString("Denominator"));
-                                    ViccenReport.add(getdata);
-                                }
-
-
-                            }
-                        }
-
+                            getdata.setYearWeekISO(Vaccineinfo.getString("Vecka"));
+                            getdata.setRegion(Vaccineinfo.getString("Region"));
+                            getdata.setNumberDosesReceived(Vaccineinfo.getString("Antal vaccinationer"));
+                            ViccenReport.add(getdata);
                     }
-                    volleyResponseListener.onResponse(ViccenReport);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+
+            volleyResponseListener.onResponse(ViccenReport);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    },new Response.ErrorListener() {
+    @Override
+    public void onErrorResponse(VolleyError error) {
+        volleyResponseListener.onError("something wrong");
             }
-        },new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                volleyResponseListener.onError("something wrong");
-            }
-        });
-        MySingleton.getInstance(context).addToRequestQueue(request);
+});MySingleton.getInstance(context).addToRequestQueue(request);
 
     }
 

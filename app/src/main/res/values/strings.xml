@@ -78,16 +78,28 @@
     </string-array>
 
     <string-array name="region_sweden">
-        <item>Sweden</item>
-        <item>Whole Sweden</item>
-        <item>South Sweden</item>
-        <item>Småland</item>
+        <item>| Sverige |</item>
         <item>Stockholm</item>
-        <item>West Sweden</item>
-        <item>East Middle Sweden</item>
-        <item>North Middle Sweden</item>
-        <item>Middle Norrland</item>
-        <item>Upper Norrland</item>
+        <item>Uppsala</item>
+        <item>Södermanland</item>
+        <item>Östergötland</item>
+        <item>Jönköping</item>
+        <item>Kronoberg</item>
+        <item>Kalmar</item>
+        <item>Gotland</item>
+        <item>Blekinge</item>
+        <item>Skåne</item>
+        <item>Halland</item>
+        <item>Västra Götaland</item>
+        <item>Värmland</item>
+        <item>Örebro</item>
+        <item>Västmanland</item>
+        <item>Dalarna</item>
+        <item>Gävleborg</item>
+        <item>Västernorrland</item>
+        <item>Jämtland</item>
+        <item>Västerbotten</item>
+        <item>Norrbotten</item>
     </string-array>
     <string name="action_settings" translatable="false">something here</string>
 
