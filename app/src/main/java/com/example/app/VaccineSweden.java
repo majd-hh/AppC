@@ -31,7 +31,7 @@ public class VaccineSweden {
     public void getVaccineData(String Age,String counties,com.example.app.Vaccineinfo.VolleyResponseListener volleyResponseListener){
         String finalCounties="",AGE="";
 
-        if (counties.isEmpty()){
+        if (counties.isEmpty()||counties.equals("SE")){
             finalCounties="Sweden";
         }
         else {

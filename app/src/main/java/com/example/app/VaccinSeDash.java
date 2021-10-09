@@ -68,6 +68,7 @@ public class VaccinSeDash extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if(adapterView.getItemAtPosition(i).toString().equals("Sweden")){
+                    SwedenCountis="SE";
                     vaccinSweden(vaccineSweden,AgeGroup,SwedenCountis);
 
                 }
@@ -77,7 +78,7 @@ public class VaccinSeDash extends AppCompatActivity {
                     String item = adapterView.getItemAtPosition(i).toString();
                     SwedenCountis=item;
                     switch (item){
-                        case "Whole Sweden": SwedenCountis= "Sweden";
+                        case "Whole Sweden": SwedenCountis= "SE";
                             break;
                         case "South Sweden": SwedenCountis= "SE22";
                             break;
@@ -151,7 +152,7 @@ public class VaccinSeDash extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if (!(SwedenCountis.equals("Sweden"))){
+                if (!(SwedenCountis.equals("SE"))){
                     AgeGroup="ALL";
                 }
                 vaccinSweden(vaccineSweden,AgeGroup,SwedenCountis);
@@ -179,8 +180,8 @@ public class VaccinSeDash extends AppCompatActivity {
 
 
                 ArrayList<String> veckoName = new ArrayList<>(veckor(VaccineData)); //get weeks name
-                NumberDosesReceve( VaccineData);
-                NumberDoses1(VaccineData);
+                NumberDosesReceve(VaccineData,SwedenCountis);
+                NumberDoses1(VaccineData,SwedenCountis);
                 //NumberDoses2(VaccineData);
                 swedenChart(veckoName,doss1,doss2); // chart funcktion to represent Vaccine data
 
@@ -270,20 +271,22 @@ public class VaccinSeDash extends AppCompatActivity {
 
     }
 
-    private  int NumberDosesReceve(List<VaccineData> VaccineData){
+    private  int NumberDosesReceve(List<VaccineData> VaccineData,String countis){
         int suman=0;
         for (int i=0;i<VaccineData.size();i++){
-            suman = (suman+ Integer.parseInt(VaccineData.get(i).getNumberDosesReceived()));
+            if ( (VaccineData.get(i).getRegion().equals(countis)) ) {
+                suman = (suman + Integer.parseInt(VaccineData.get(i).getNumberDosesReceived()));
+            }
         }
-        System.out.println(":::::::Summan:::::"+suman);
+        System.out.println(":::::::Summan DIs:::::"+suman);
         return suman;
     }
-    private  int NumberDoses1(List<VaccineData> VaccineData){
+    private  int NumberDoses1(List<VaccineData> VaccineData,String countis){
         int suman=0,sum1=0,sum2=0;
         for (int i=0;i<VaccineData.size();i++){
 
-            //System.out.println(" AT : "+i+"  :::::::VaccineData.get(i).getRegion() :::::"+ VaccineData.get(i).getRegion());
-            if ( (VaccineData.get(i).getRegion().equals("SE")) ){
+           // System.out.println(" AT : "+i+"  :::::::VaccineData.get(i).getRegion() :::::"+ VaccineData.get(i).getRegion());
+            if ( (VaccineData.get(i).getRegion().equals(countis)) ){
                 sum1 = sum1+ VaccineData.get(i).getFirstDose();
                 sum2 = sum2+ VaccineData.get(i).getSecondDose();
             }
@@ -334,7 +337,9 @@ public class VaccinSeDash extends AppCompatActivity {
                 else {
                     VD++;
                 }
+                System.out.println(" AT : "+i+"  ::::::: DOss1 [] VaccineData.get(i).getRegion() :::::"+ Vacc.get(j).getRegion());
             }
+
         }
 
         System.out.println("dosss 1 func efter lopop");
