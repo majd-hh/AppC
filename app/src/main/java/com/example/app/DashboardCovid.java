@@ -13,7 +13,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import java.util.List;
 
-public class DashboardActivity extends AppCompatActivity {
+public class DashboardCovid extends AppCompatActivity {
     Button buttonView;
     EditText cityInput;
 
@@ -31,12 +31,12 @@ public class DashboardActivity extends AppCompatActivity {
         startActivity(intent);
     }
     public void moveToVaccineEU(){
-        Intent intent = new Intent(this, vaccineDashboard.class);
+        Intent intent = new Intent(this, vaccineDashboardUE.class);
         startActivity(intent);
     }
 
     public void moveToVaccinSE(){
-        Intent intent = new Intent(this, VaccinSeDash.class);
+        Intent intent = new Intent(this, VaccinDashboardSE.class);
         startActivity(intent);
     }
 
@@ -48,20 +48,20 @@ public class DashboardActivity extends AppCompatActivity {
         ListView listV= (ListView) findViewById(R.id.list_view);
         cityInput=(EditText) findViewById(R.id.CityName);
 
-        final covidState covidupdate= new covidState(DashboardActivity.this);
+        final covidState covidupdate= new covidState(DashboardCovid.this);
         buttonView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 covidupdate.getcovidState(cityInput.getText().toString().trim(), new covidState.VolleyResponseListener() {
                     @Override
                     public void onError(String message) {
-                        Toast.makeText(DashboardActivity.this,"returned wrong", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DashboardCovid.this,"returned wrong", Toast.LENGTH_SHORT).show();
 
                     }
 
                     @Override
                     public void onResponse(List<covidStatemodel> covidStatemodel) {
-                        ArrayAdapter arrayAdapter = new ArrayAdapter(DashboardActivity.this, android.R.layout.simple_list_item_1,covidStatemodel);
+                        ArrayAdapter arrayAdapter = new ArrayAdapter(DashboardCovid.this, android.R.layout.simple_list_item_1,covidStatemodel);
                         listV.setAdapter(arrayAdapter);
 
                     }

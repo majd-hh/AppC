@@ -13,12 +13,12 @@ public class MyPageAcitvity extends AppCompatActivity {
 
 
     public void moveToCOVID(){
-        Intent intent = new Intent(this, DashboardActivity.class);
+        Intent intent = new Intent(this, DashboardCovid.class);
         startActivity(intent);
     }
 
     public void moveToVaccineEU(){
-        Intent intent = new Intent(this, vaccineDashboard.class);
+        Intent intent = new Intent(this, vaccineDashboardUE.class);
         startActivity(intent);
     }
 
@@ -29,7 +29,7 @@ public class MyPageAcitvity extends AppCompatActivity {
     }
 
     public void moveToVaccinSE(){
-        Intent intent = new Intent(this, VaccinSeDash.class);
+        Intent intent = new Intent(this, VaccinDashboardSE.class);
         startActivity(intent);
     }
 

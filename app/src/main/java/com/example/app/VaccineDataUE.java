@@ -1,6 +1,6 @@
 package com.example.app;
 
-public class VaccineData {
+public class VaccineDataUE {
 
     private String YearWeekISO;
     private int FirstDose;
@@ -16,15 +16,15 @@ public class VaccineData {
     private String Denominator;
 
 
-    public VaccineData(){
+    public VaccineDataUE(){
 
     }
 
 
-    public VaccineData(String yearWeekISO, int firstDose, String firstDoseRefused,
-                       int secondDose, int unknownDose, String numberDosesReceived,
-                       String region, int population, String reportingCountry,
-                       String targetGroup, String vaccine, String denominator) {
+    public VaccineDataUE(String yearWeekISO, int firstDose, String firstDoseRefused,
+                         int secondDose, int unknownDose, String numberDosesReceived,
+                         String region, int population, String reportingCountry,
+                         String targetGroup, String vaccine, String denominator) {
         YearWeekISO = yearWeekISO;
         FirstDose = firstDose;
         FirstDoseRefused = firstDoseRefused;

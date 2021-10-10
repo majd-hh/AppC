@@ -12,22 +12,22 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Vaccineinfo {
+public class VaccineinfoUE {
 
 
     String url="https://hex.cse.kau.se/~abdualna100/JSON_EU/UE.json";
     Context context;
-    public Vaccineinfo(Context context) {
+    public VaccineinfoUE(Context context) {
         this.context = context;
     }
 
     public interface VolleyResponseListener{
         void onError(String message);
-        void onResponse(List<VaccineData> VaccineData);
+        void onResponse(List<VaccineDataUE> VaccineData);
 
     }
 
-    public void getVaccineData(String country,String Age,String vaccineType,com.example.app.Vaccineinfo.VolleyResponseListener volleyResponseListener){
+    public void getVaccineData(String country, String Age, String vaccineType, VaccineinfoUE.VolleyResponseListener volleyResponseListener){
 
         String countryName="",AGE="",Vaccine="";
 
@@ -61,7 +61,7 @@ public class Vaccineinfo {
 
         System.out.println("\n \n "+ "*****Country:::  "+countryName+"  AGE:: " +AGE+"  Vaccine:: " + Vaccine);
         //get json object
-        List<VaccineData> ViccenReport = new ArrayList<>();
+        List<VaccineDataUE> ViccenReport = new ArrayList<>();
         JsonObjectRequest request=new JsonObjectRequest(Request.Method.GET,url,null ,new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -71,7 +71,7 @@ public class Vaccineinfo {
                     System.out.println("\n \n "+ "*****FCountry:::  "+finalCountryName+"  finalAGE:: " +finalAGE+"  finalVaccine:: " + finalVaccine);
                     //get data
                     for (int i=0;i<ViccenData.length();i++){
-                        VaccineData getdata = new VaccineData();
+                        VaccineDataUE getdata = new VaccineDataUE();
                         JSONObject Vaccineinfo = (JSONObject) ViccenData.get(i);
 
                         if ( ( Vaccineinfo.getString("ReportingCountry").equals(finalCountryName) ) ) {

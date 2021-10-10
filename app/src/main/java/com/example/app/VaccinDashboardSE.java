@@ -32,7 +32,7 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VaccinSeDash extends AppCompatActivity {
+public class VaccinDashboardSE extends AppCompatActivity {
     BarChart mChart,mChart2;
     LineChart mChart3;
     Spinner spinnerAge,spinnerDoss,spinnerSweden;
@@ -52,7 +52,7 @@ public class VaccinSeDash extends AppCompatActivity {
         administered=findViewById(R.id.DOSADMIN);
         distributed=findViewById(R.id.DOSdist);
 
-        final swedenVaccineData swedenVaccineData= new swedenVaccineData(VaccinSeDash.this);
+        final VaccineinfoSE swedenVaccineData= new VaccineinfoSE(VaccinDashboardSE.this);
 
         spinnerAge = findViewById(R.id.age_spinnerSE);
         spinnerDoss = findViewById(R.id.product_spinnerSE);
@@ -135,11 +135,11 @@ public class VaccinSeDash extends AppCompatActivity {
 
     }
     //get the number of doss som Administered from swedebVaccineData.
-    public void vaccineAdministered(swedenVaccineData swedenVaccineData,String counties){
-        swedenVaccineData.getVaccineAdministeredSE(counties, new swedenVaccineData.VolleyResponseListener() {
+    public void vaccineAdministered(VaccineinfoSE swedenVaccineData, String counties){
+        swedenVaccineData.getVaccineAdministeredSE(counties, new VaccineinfoSE.VolleyResponseListener() {
             @Override
             public void onError(String message) {
-                Toast.makeText(VaccinSeDash.this,"returned wrong", Toast.LENGTH_SHORT).show();
+                Toast.makeText(VaccinDashboardSE.this,"returned wrong", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -152,11 +152,11 @@ public class VaccinSeDash extends AppCompatActivity {
     }
 
     //get the number of doss som distributed from swedebVaccineData.
-    public void vaccineDistributed(swedenVaccineData swedenVaccineData,String counties){
-        swedenVaccineData.getVaccineDistributedSE(counties, new swedenVaccineData.VolleyResponseListener() {
+    public void vaccineDistributed(VaccineinfoSE swedenVaccineData, String counties){
+        swedenVaccineData.getVaccineDistributedSE(counties, new VaccineinfoSE.VolleyResponseListener() {
             @Override
             public void onError(String message) {
-                Toast.makeText(VaccinSeDash.this,"returned wrong", Toast.LENGTH_SHORT).show();
+                Toast.makeText(VaccinDashboardSE.this,"returned wrong", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -168,11 +168,11 @@ public class VaccinSeDash extends AppCompatActivity {
 
     }
 
-    public void vaccineDataSE(swedenVaccineData swedenVaccineData,String counties,String age,String doss){
-        swedenVaccineData.getVaccineDataSE(counties, age, doss, new swedenVaccineData.VolleyResponseListener() {
+    public void vaccineDataSE(VaccineinfoSE swedenVaccineData, String counties, String age, String doss){
+        swedenVaccineData.getVaccineDataSE(counties, age, doss, new VaccineinfoSE.VolleyResponseListener() {
             @Override
             public void onError(String message) {
-                Toast.makeText(VaccinSeDash.this,"returned wrong", Toast.LENGTH_SHORT).show();
+                Toast.makeText(VaccinDashboardSE.this,"returned wrong", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -183,11 +183,11 @@ public class VaccinSeDash extends AppCompatActivity {
         });
     }
 
-    public void vaccineDataSEAge(swedenVaccineData swedenVaccineData,String counties,String age,String doss){
-        swedenVaccineData.getVaccineDataSEAge(counties, age, doss, new swedenVaccineData.VolleyResponseListener() {
+    public void vaccineDataSEAge(VaccineinfoSE swedenVaccineData, String counties, String age, String doss){
+        swedenVaccineData.getVaccineDataSEAge(counties, age, doss, new VaccineinfoSE.VolleyResponseListener() {
             @Override
             public void onError(String message) {
-                Toast.makeText(VaccinSeDash.this,"returned wrong", Toast.LENGTH_SHORT).show();
+                Toast.makeText(VaccinDashboardSE.this,"returned wrong", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -198,12 +198,12 @@ public class VaccinSeDash extends AppCompatActivity {
         });
     }
 
-    public  void vaccineDataandel(swedenVaccineData swedenVaccineData,String counties,String age,String doss){
+    public  void vaccineDataandel(VaccineinfoSE swedenVaccineData, String counties, String age, String doss){
 
-        swedenVaccineData.getVaccineDataSE(counties, age, doss, new swedenVaccineData.VolleyResponseListener() {
+        swedenVaccineData.getVaccineDataSE(counties, age, doss, new VaccineinfoSE.VolleyResponseListener() {
             @Override
             public void onError(String message) {
-                Toast.makeText(VaccinSeDash.this,"returned wrong", Toast.LENGTH_SHORT).show();
+                Toast.makeText(VaccinDashboardSE.this,"returned wrong", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -271,7 +271,7 @@ public class VaccinSeDash extends AppCompatActivity {
         }
 
         if(sumval1==0 && sumval2==0){
-            Toast.makeText(VaccinSeDash.this, "There is no data for this selected choice ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(VaccinDashboardSE.this, "There is no data for this selected choice ", Toast.LENGTH_SHORT).show();
         }
 
         BarDataSet set1;
@@ -364,7 +364,7 @@ public class VaccinSeDash extends AppCompatActivity {
         }
 
         if(sumval1==0 && sumval2==0){
-            Toast.makeText(VaccinSeDash.this, "There is no data for this selected choice ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(VaccinDashboardSE.this, "There is no data for this selected choice ", Toast.LENGTH_SHORT).show();
         }
         xAxisLabel.remove(weekNumber-1);
         xAxisLabel.remove(weekNumber-2);
@@ -441,7 +441,7 @@ public class VaccinSeDash extends AppCompatActivity {
         }
 
         if(sumval1==0 && sumval2==0){
-            Toast.makeText(VaccinSeDash.this, "There is no data for this selected choice ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(VaccinDashboardSE.this, "There is no data for this selected choice ", Toast.LENGTH_SHORT).show();
         }
 
         LineDataSet set1;

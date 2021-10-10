@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void moveToDashboard(){
-        Intent intent = new Intent(this, DashboardActivity.class);
+        Intent intent = new Intent(this, DashboardCovid.class);
         startActivity(intent);
     }
     public void moveToSignUp(){

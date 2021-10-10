@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class vaccineDashboard extends AppCompatActivity {
+public class vaccineDashboardUE extends AppCompatActivity {
     BarChart mChart,mChart2;
     Spinner spinnerCountry,spinnerAge,spinnerProduct,spinnerSweden;
     Button buttonGet;
@@ -41,7 +41,7 @@ public class vaccineDashboard extends AppCompatActivity {
         mChart = findViewById(R.id.bar_chart);
         buttonGet= findViewById(R.id.buttonGet);
 
-        final Vaccineinfo VaccineUpdate= new Vaccineinfo(vaccineDashboard.this);
+        final VaccineinfoUE VaccineUpdate= new VaccineinfoUE(vaccineDashboardUE.this);
 
         spinnerCountry =  findViewById(R.id.country_spinner);
         spinnerAge =  findViewById(R.id.age_spinner);
@@ -126,16 +126,16 @@ public class vaccineDashboard extends AppCompatActivity {
 
     }
 
-    public void  VaccinDashInfo(Vaccineinfo VaccineUpdate,String couName,String Agge,String prodduct){
-        VaccineUpdate.getVaccineData( couName,Agge,prodduct,new Vaccineinfo.VolleyResponseListener(){
+    public void  VaccinDashInfo(VaccineinfoUE VaccineUpdate, String couName, String Agge, String prodduct){
+        VaccineUpdate.getVaccineData( couName,Agge,prodduct,new VaccineinfoUE.VolleyResponseListener(){
             @Override
             public void onError(String message) {
-                Toast.makeText(vaccineDashboard.this,"returned wrong", Toast.LENGTH_SHORT).show();
+                Toast.makeText(vaccineDashboardUE.this,"returned wrong", Toast.LENGTH_SHORT).show();
 
             }
 
             @Override
-            public void onResponse(List<VaccineData> VaccineData) {
+            public void onResponse(List<VaccineDataUE> VaccineData) {
                 int [] doss1, doss2;
                 System.out.println("::::::::Size when choice  "+ VaccineData.size());
                     doss1=Doss1(VaccineData); //get number of doss1 for each week.
@@ -202,7 +202,7 @@ public class vaccineDashboard extends AppCompatActivity {
         }
 
         if(sumval1==0 && sumval2==0){
-            Toast.makeText(vaccineDashboard.this, "There is no data for this selected choice ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(vaccineDashboardUE.this, "There is no data for this selected choice ", Toast.LENGTH_SHORT).show();
         }
 
         BarDataSet set1;
@@ -245,9 +245,9 @@ public class vaccineDashboard extends AppCompatActivity {
 
     }
 
-    private  int [] Doss1(List<VaccineData> Vacc){
+    private  int [] Doss1(List<VaccineDataUE> Vacc){
         int [] sumDoss = new int[100];
-        List<VaccineData> vaccinInfoo= new ArrayList<>(Vacc);
+        List<VaccineDataUE> vaccinInfoo= new ArrayList<>(Vacc);
         System.out.println("Size i dosss 1 func  "+vaccinInfoo.size());
         int VD=0;
         for (int i=1;i<vaccinInfoo.size();i++){
@@ -267,7 +267,7 @@ public class vaccineDashboard extends AppCompatActivity {
         return sumDoss;
     }
 
-    private  int [] Doss2(List<VaccineData> Vacc){
+    private  int [] Doss2(List<VaccineDataUE> Vacc){
         int [] sumDoss = new int[100];
         int VD=0;
         System.out.println("Size i dosss 2 func  "+Vacc.size());
@@ -287,7 +287,7 @@ public class vaccineDashboard extends AppCompatActivity {
     }
 
 
-    private ArrayList<String> veckor(List<VaccineData> Vaccine){
+    private ArrayList<String> veckor(List<VaccineDataUE> Vaccine){
         final ArrayList<String> vekor = new ArrayList<>();
         for (int i=1;i<Vaccine.size();i++){
             for (int j=i-1;j<i;j++) {

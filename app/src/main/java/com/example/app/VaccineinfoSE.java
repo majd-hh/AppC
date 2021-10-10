@@ -11,10 +11,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class swedenVaccineData {
+public class VaccineinfoSE {
     String url="https://hex.cse.kau.se/~abdualna100/JSON/data.json";
     Context context;
-    public swedenVaccineData(Context context) {
+    public VaccineinfoSE(Context context) {
         this.context = context;
     }
 
@@ -24,7 +24,7 @@ public class swedenVaccineData {
 
     }
     //getVaccineDistributedSE from json
-    public void getVaccineDistributedSE(String counties,com.example.app.swedenVaccineData.VolleyResponseListener volleyResponseListener){
+    public void getVaccineDistributedSE(String counties, VaccineinfoSE.VolleyResponseListener volleyResponseListener){
         //get json object
         List<VaccineDataSE> ViccenReport = new ArrayList<>();
         String finalcounteis=counties;
@@ -60,7 +60,7 @@ public class swedenVaccineData {
     }
 
     //getVaccineAdministeredSE from json
-    public void getVaccineAdministeredSE(String counties,com.example.app.swedenVaccineData.VolleyResponseListener volleyResponseListener){
+    public void getVaccineAdministeredSE(String counties, VaccineinfoSE.VolleyResponseListener volleyResponseListener){
         //get json object
         List<VaccineDataSE> ViccenReport = new ArrayList<>();
         String finalcounteis=counties;
@@ -97,7 +97,7 @@ public class swedenVaccineData {
 
     }
     //get weekly Vaccine data (doss1,doss2) from json.
-    public void getVaccineDataSE(String counties,String age,String doss,com.example.app.swedenVaccineData.VolleyResponseListener volleyResponseListener){
+    public void getVaccineDataSE(String counties, String age, String doss, VaccineinfoSE.VolleyResponseListener volleyResponseListener){
 
         //get json object
         List<VaccineDataSE> ViccenReport = new ArrayList<>();
@@ -137,7 +137,7 @@ public class swedenVaccineData {
 
     }
     //get Vaccine data(doss1,doss2) by Age from json.
-    public void getVaccineDataSEAge(String counties,String age,String doss,com.example.app.swedenVaccineData.VolleyResponseListener volleyResponseListener){
+    public void getVaccineDataSEAge(String counties, String age, String doss, VaccineinfoSE.VolleyResponseListener volleyResponseListener){
 
         //get json object
         List<VaccineDataSE> ViccenReport = new ArrayList<>();
