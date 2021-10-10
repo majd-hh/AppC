@@ -1,4 +1,5 @@
 package com.example.app;
+
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -7,30 +8,37 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class VaccinSeDash extends AppCompatActivity {
     BarChart mChart,mChart2;
-    Spinner spinnerCountry,spinnerAge,spinnerProduct,spinnerSweden;
+    LineChart mChart3;
+    Spinner spinnerAge,spinnerDoss,spinnerSweden;
     Button buttonGet;
-    String countryName="", AgeGroup="",vacinType="",SwedenCountis="" ;
+    TextView distributed,administered;
+    String countryName="", AgeGroup="",DossNumber="",SwedenCountis="" ;
     int[] colorClassArray = new int[]{Color.GREEN,Color.YELLOW,Color.BLUE};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,23 +46,26 @@ public class VaccinSeDash extends AppCompatActivity {
         setContentView(R.layout.activity_vaccin_se_dash);
         mChart2 = findViewById(R.id.bar_chartSE2);
         mChart = findViewById(R.id.bar_chartSE1);
-        buttonGet= findViewById(R.id.buttonGetSE);
+        mChart3=findViewById(R.id.line_chart);
 
-        final VaccineSweden vaccineSweden= new VaccineSweden(VaccinSeDash.this);
+        buttonGet= findViewById(R.id.buttonGetSE);
+        administered=findViewById(R.id.DOSADMIN);
+        distributed=findViewById(R.id.DOSdist);
+
         final swedenVaccineData swedenVaccineData= new swedenVaccineData(VaccinSeDash.this);
 
         spinnerAge = findViewById(R.id.age_spinnerSE);
-        spinnerProduct = findViewById(R.id.product_spinnerSE);
+        spinnerDoss = findViewById(R.id.product_spinnerSE);
         spinnerSweden= findViewById(R.id.country_spinnerSE);
 
         ArrayAdapter<CharSequence> adapterSweden = ArrayAdapter.createFromResource(this,
                 R.array.region_sweden, android.R.layout.simple_spinner_item);
 
         ArrayAdapter<CharSequence> adapterAge = ArrayAdapter.createFromResource(this,
-                R.array.Age_array, android.R.layout.simple_spinner_item);
+                R.array.Age_arraySE, android.R.layout.simple_spinner_item);
 
-        ArrayAdapter<CharSequence> adapterProuduct = ArrayAdapter.createFromResource(this,
-                R.array.Product_array, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapterDoss = ArrayAdapter.createFromResource(this,
+                R.array.Doss_array, android.R.layout.simple_spinner_item);
 
         adapterSweden.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerSweden.setAdapter(adapterSweden);
@@ -62,8 +73,8 @@ public class VaccinSeDash extends AppCompatActivity {
         adapterAge.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerAge.setAdapter(adapterAge);
 
-        adapterProuduct.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerProduct.setAdapter(adapterProuduct);
+        adapterDoss.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerDoss.setAdapter(adapterDoss);
 
         spinnerSweden.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -96,17 +107,12 @@ public class VaccinSeDash extends AppCompatActivity {
             }
         });
 
-        spinnerProduct.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinnerDoss.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(adapterView.getItemAtPosition(i).toString().equals("Product")){
-                    vacinType="";
-                }
-                else {
-                    vacinType = adapterView.getItemAtPosition(i).toString();
-                    Toast.makeText(adapterView.getContext(), "Selected " + vacinType, Toast.LENGTH_SHORT).show();
+                DossNumber = adapterView.getItemAtPosition(i).toString();
+                Toast.makeText(adapterView.getContext(), "Selected " + DossNumber, Toast.LENGTH_SHORT).show();
 
-                }
             }
 
             @Override
@@ -119,15 +125,34 @@ public class VaccinSeDash extends AppCompatActivity {
         buttonGet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                vaccineDistributed( swedenVaccineData,SwedenCountis);//total doss distributed.
+                vaccineAdministered(swedenVaccineData,SwedenCountis);//total doss Administered.
+                vaccineDataSE(swedenVaccineData, SwedenCountis, AgeGroup, "");
+                vaccineDataSEAge(swedenVaccineData, SwedenCountis, AgeGroup, "");
+                vaccineDataandel( swedenVaccineData, SwedenCountis, AgeGroup, DossNumber);
+            }
+        });
 
-                //vaccinSweden(vaccineSweden,AgeGroup,SwedenCountis);
-                vaccineDistr(swedenVaccineData,SwedenCountis);
+    }
+    //get the number of doss som Administered from swedebVaccineData.
+    public void vaccineAdministered(swedenVaccineData swedenVaccineData,String counties){
+        swedenVaccineData.getVaccineAdministeredSE(counties, new swedenVaccineData.VolleyResponseListener() {
+            @Override
+            public void onError(String message) {
+                Toast.makeText(VaccinSeDash.this,"returned wrong", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onResponse(List<VaccineDataSE> VaccineData) {
+                int antalDitributed=NumberDosesAdministered(VaccineData,SwedenCountis); //total doss distributed.
+                administered.setText(String.format("%d", antalDitributed)); //textView for total doss distributed.
             }
         });
 
     }
 
-    public void vaccineDistr(swedenVaccineData swedenVaccineData,String counties){
+    //get the number of doss som distributed from swedebVaccineData.
+    public void vaccineDistributed(swedenVaccineData swedenVaccineData,String counties){
         swedenVaccineData.getVaccineDistributedSE(counties, new swedenVaccineData.VolleyResponseListener() {
             @Override
             public void onError(String message) {
@@ -135,64 +160,71 @@ public class VaccinSeDash extends AppCompatActivity {
             }
 
             @Override
-            public void onResponse(List<VaccineData> VaccineData) {
-                //int [] doss1, doss2;
-                //int sum=0,sumdoss1=0,sumdoss2=0;
-                System.out.println("::::::::Counteia "+ counties);
-                System.out.println("::::::::Size when choice  "+ VaccineData.size());
-               // System.out.println("::::::::SWEDEN "+ VaccineData);
-
-                //doss1=Doss1(VaccineData); //get number of doss1 for each week.
-                //doss2=Doss2(VaccineData); //get number of doss1 for each week.
-
-                //ArrayList<String> veckoName = new ArrayList<>(veckor(VaccineData)); //get weeks name
-               NumberDosesReceve(VaccineData,SwedenCountis);
-                //NumberDoses1(VaccineData,SwedenCountis);
-                //NumberDoses2(VaccineData);
-                //swedenChart(veckoName,doss1,doss2); // chart funcktion to represent Vaccine data
-                //NumberDosesReceived(VaccineData);
+            public void onResponse(List<VaccineDataSE> VaccineData) {
+                int antalDitributed=NumberDosesDistributed(VaccineData,SwedenCountis); //total doss distributed.
+                distributed.setText(String.format("%d", antalDitributed)); //textView for total doss distributed.
             }
         });
 
     }
 
-
-    public void vaccinSweden(VaccineSweden vaccineSweden,String Agg,String counties){
-        vaccineSweden.getVaccineData(Agg, counties, new Vaccineinfo.VolleyResponseListener() {
+    public void vaccineDataSE(swedenVaccineData swedenVaccineData,String counties,String age,String doss){
+        swedenVaccineData.getVaccineDataSE(counties, age, doss, new swedenVaccineData.VolleyResponseListener() {
             @Override
             public void onError(String message) {
                 Toast.makeText(VaccinSeDash.this,"returned wrong", Toast.LENGTH_SHORT).show();
-
             }
 
             @Override
-            public void onResponse(List<VaccineData> VaccineData) {
-                int [] doss1, doss2;
-                int sum=0,sumdoss1=0,sumdoss2=0;
-                System.out.println("::::::::Size when choice  "+ VaccineData.size());
-                doss1=Doss1(VaccineData); //get number of doss1 for each week.
-                doss2=Doss2(VaccineData); //get number of doss1 for each week.
-
-
-
-                ArrayList<String> veckoName = new ArrayList<>(veckor(VaccineData)); //get weeks name
-                NumberDosesReceve(VaccineData,SwedenCountis);
-                NumberDoses1(VaccineData,SwedenCountis);
-                //NumberDoses2(VaccineData);
-                swedenChart(veckoName,doss1,doss2); // chart funcktion to represent Vaccine data
+            public void onResponse(List<VaccineDataSE> VaccineData) {
+                swedenChartWeekly(veckor(VaccineData),Doss1(VaccineData, counties),Doss2(VaccineData, counties));
 
             }
         });
-
     }
 
+    public void vaccineDataSEAge(swedenVaccineData swedenVaccineData,String counties,String age,String doss){
+        swedenVaccineData.getVaccineDataSEAge(counties, age, doss, new swedenVaccineData.VolleyResponseListener() {
+            @Override
+            public void onError(String message) {
+                Toast.makeText(VaccinSeDash.this,"returned wrong", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onResponse(List<VaccineDataSE> VaccineData) {
+                swedenChartAge( Age(VaccineData,counties),Doss1Age(VaccineData,counties),Doss2Age(VaccineData,counties));
+
+            }
+        });
+    }
+
+    public  void vaccineDataandel(swedenVaccineData swedenVaccineData,String counties,String age,String doss){
+
+        swedenVaccineData.getVaccineDataSE(counties, age, doss, new swedenVaccineData.VolleyResponseListener() {
+            @Override
+            public void onError(String message) {
+                Toast.makeText(VaccinSeDash.this,"returned wrong", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onResponse(List<VaccineDataSE> VaccineData) {
+                List<VaccineDataSE> list=new ArrayList<>();
+                if (doss.equals("Doss1")){
+                    swedenLineChart(veckor(VaccineData), Doss1_andel(VaccineData, counties),Doss2_andel(list, counties));
+                }
+                else{
+                    swedenLineChart(veckor(VaccineData), Doss1_andel(list, counties),Doss2_andel(VaccineData, counties));
+                }
+                //Doss2_andel(VaccineData, counties);
 
 
-
+            }
+        });
+    }
+    //Staked Chart.
     @SuppressLint("UseCompatLoadingForDrawables")
-    public void swedenChart(List<String> xAxisLabel,int[] dos1,int []dos2){
-        int weekNumber=0;
-        weekNumber=dos1[99];
+    public void swedenChartWeekly(List<String> xAxisLabel,int[] dos1,int []dos2){
+        int weekNumber=xAxisLabel.size();
 
         mChart = findViewById(R.id.bar_chartSE1);
         mChart.getDescription().setEnabled(false);
@@ -244,6 +276,15 @@ public class VaccinSeDash extends AppCompatActivity {
 
         BarDataSet set1;
         xAxis.setValueFormatter(new IndexAxisValueFormatter(xAxisLabel));
+       /*
+        leftAxis.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+                return String.valueOf(yVals1.get((int) value % yVals1.size()));
+            }
+        });
+
+        */
 
         if (mChart.getData() != null &&
                 mChart.getData().getDataSetCount() > 0) {
@@ -252,10 +293,10 @@ public class VaccinSeDash extends AppCompatActivity {
             mChart.getData().notifyDataChanged();
             mChart.notifyDataSetChanged();
         } else {
-            set1 = new BarDataSet(yVals1, "vacccine chart");
+            set1 = new BarDataSet(yVals1, "Vacccine chart");
             set1.setDrawIcons(false);
             set1.setColors(getColors());
-            set1.setStackLabels(new String[]{"First doss", "second doss", "Marriages"});
+            set1.setStackLabels(new String[]{"First doss", "second doss", ""});
             ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
             dataSets.add(set1);
             BarData data = new BarData(dataSets);
@@ -263,148 +304,416 @@ public class VaccinSeDash extends AppCompatActivity {
             mChart.setData(data);
 
         }
-        mChart.setVisibleXRangeMaximum(25);
-        mChart.moveViewToX(15);
+        mChart.setVisibleXRangeMaximum(20);
+        mChart.moveViewToX(0);
         mChart.setFitBars(true);
         mChart.invalidate();
 
     }
+    public void swedenChartAge(List<String> xAxisLabel,int[] dos1,int []dos2){
+        int weekNumber=xAxisLabel.size();
+        for (int i = 0; i <weekNumber; i++) {
+            System.out.println(i+" -in chart AGE doss1 "+dos1[i]);
+        }
+        for (int i = 0; i <weekNumber; i++) {
+            System.out.println(i+ " -in chart AGE doss2 "+dos2[i]);
+        }
 
-    private  int NumberDosesReceve(List<VaccineData> VaccineData,String countis){
-        int suman=0;
+
+        mChart2 = findViewById(R.id.bar_chartSE2);
+        mChart2.getDescription().setEnabled(false);
+        mChart2.setMaxVisibleValueCount((int) 2.5);
+
+        // scaling can now only be done on x- and y-axis separately
+        mChart2.setPinchZoom(false);
+        mChart2.setDrawGridBackground(false);
+        mChart2.setDrawBarShadow(false);
+        mChart2.setDrawValueAboveBar(false);
+        mChart2.setHighlightFullBarEnabled(false);
+
+        // change the position of the y-labels
+        YAxis leftAxis = mChart2.getAxisLeft();
+        XAxis xAxis = mChart2.getXAxis();
+        leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
+        mChart2.getAxisRight().setEnabled(false);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+
+        // setting data;
+        Legend l = mChart.getLegend();
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        l.setDrawInside(false);
+        l.setFormSize(8f);
+        l.setFormToTextSpace(2f);
+        l.setXEntrySpace(6f);
+
+        ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
+        float sumval1=0,sumval2=0;
+
+        for (int i = 0; i <weekNumber-1; i++) {
+            float val1 = (float) (dos1[i]);
+            sumval1=sumval1+val1;
+
+            float val2 = (float) (dos2[i]);
+            sumval2=sumval2+val2;
+
+            yVals1.add(new BarEntry(i,
+                    new float[]{ val1, val2,0},
+                    getResources().getDrawable(R.drawable.aabb)));
+        }
+
+        if(sumval1==0 && sumval2==0){
+            Toast.makeText(VaccinSeDash.this, "There is no data for this selected choice ", Toast.LENGTH_SHORT).show();
+        }
+        xAxisLabel.remove(weekNumber-1);
+        xAxisLabel.remove(weekNumber-2);
+        xAxisLabel.add("90+");
+
+        BarDataSet set1;
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(xAxisLabel));
+
+        if (mChart2.getData() != null &&
+                mChart2.getData().getDataSetCount() > 0) {
+            set1 = (BarDataSet) mChart2.getData().getDataSetByIndex(0);
+            set1.setValues(yVals1);
+            mChart2.getData().notifyDataChanged();
+            mChart2.notifyDataSetChanged();
+        } else {
+            set1 = new BarDataSet(yVals1, "Vacccine chart");
+            set1.setDrawIcons(false);
+            set1.setColors(getColors());
+            set1.setStackLabels(new String[]{"First doss", "second doss", ""});
+            ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
+            dataSets.add(set1);
+            BarData data = new BarData(dataSets);
+            data.setValueTextColor(Color.WHITE);
+            mChart2.setData(data);
+
+        }
+        mChart2.setVisibleXRangeMaximum(6);
+        mChart2.moveViewToX(0);
+        mChart2.setFitBars(true);
+        mChart2.invalidate();
+    }
+    //Liner Chart.
+    @SuppressLint("UseCompatLoadingForDrawables")
+    public void swedenLineChart(List<String> xAxisLabel,float[] dos1,float []dos2){
+
+        int weekNumber=xAxisLabel.size();
+
+        mChart3 = findViewById(R.id.line_chart);
+
+
+
+        YAxis leftAxis = mChart3.getAxisLeft();
+        XAxis xAxis = mChart3.getXAxis();
+        leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
+
+        mChart3.getAxisRight().setEnabled(false);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+
+
+        // setting data;
+        Legend l = mChart3.getLegend();
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        l.setDrawInside(false);
+        l.setFormSize(8f);
+        l.setFormToTextSpace(2f);
+        l.setXEntrySpace(6f);
+
+        ArrayList<Entry> yVals1 = new ArrayList<Entry>();
+        float sumval1=0,sumval2=0;
+
+        for (int i = 0; i <weekNumber; i++) {
+            float val1 = (float) (0);
+            float val2 = (float) (dos1[i]);
+            sumval1=sumval1+val1;
+
+            float val3 = (float) (dos2[i]);
+            sumval2=sumval2+val2;
+
+            yVals1.add(new BarEntry(i,
+                    new float[]{ val2, val3,val1},
+                    getResources().getDrawable(R.drawable.aabb)));
+        }
+
+        if(sumval1==0 && sumval2==0){
+            Toast.makeText(VaccinSeDash.this, "There is no data for this selected choice ", Toast.LENGTH_SHORT).show();
+        }
+
+        LineDataSet set1;
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(xAxisLabel));
+
+
+        if (mChart3.getData() != null &&
+                mChart3.getData().getDataSetCount() > 0) {
+
+            mChart3.getData().notifyDataChanged();
+            mChart3.notifyDataSetChanged();
+        } else {
+            set1 = new LineDataSet(yVals1, "vacccine chart");
+            set1.setDrawIcons(false);
+            set1.setColors(getColors());
+            //set1.setStackLabels(new String[]{"First doss", "second doss", "Marriages"});
+            ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
+            dataSets.add(set1);
+            LineData data = new LineData( dataSets);
+            data.setValueTextColor(Color.WHITE);
+            mChart3.setData(data);
+
+        }
+        mChart3.setVisibleXRangeMaximum(20);
+        mChart3.moveViewToX(0);
+        mChart3.invalidate();
+
+    }
+
+    //get number of Administered Doss.
+    private  int NumberDosesAdministered(List<VaccineDataSE> VaccineData, String countis){
+        int sum=0;
         System.out.println("countis i NumerdossssRE"+countis);
         for (int i=0;i<VaccineData.size();i++){
             if ( (VaccineData.get(i).getRegion().equals(countis)) ) {
-                suman =  Integer.parseInt(VaccineData.get(i).getNumberDosesReceived());
-                System.out.println("At"+i+"Region"+VaccineData.get(i).getRegion()+" getNumberDosesReceived:"+VaccineData.get(i).getNumberDosesReceived()+" Vecka: "+VaccineData.get(i).getYearWeekISO());
+                sum =  Integer.parseInt(VaccineData.get(i).getNumberDosesReceived());
             }
         }
-        System.out.println(":::::::Summan DIs:::::"+suman);
-        return suman;
+        return sum;
     }
-
-
-
-
-
-    private  int NumberDoses1(List<VaccineData> VaccineData,String countis){
-        int suman=0,sum1=0,sum2=0;
+    //get number of Distributed Doss.
+    private  int NumberDosesDistributed(List<VaccineDataSE> VaccineData,String countis){
+        int sum=0;
+        System.out.println("countis i NumerdossssRE"+countis);
         for (int i=0;i<VaccineData.size();i++){
-
-           // System.out.println(" AT : "+i+"  :::::::VaccineData.get(i).getRegion() :::::"+ VaccineData.get(i).getRegion());
-            if ( (VaccineData.get(i).getRegion().equals(countis)) ){
-                sum1 = sum1+ VaccineData.get(i).getFirstDose();
-                sum2 = sum2+ VaccineData.get(i).getSecondDose();
-            }
-
-        }
-        suman=sum1+sum2;
-        System.out.println("  :::::::Summan av doss  :::::"+suman);
-        return suman;
-    }
-
-    private  int NumberDoses2(List<VaccineData> VaccineData){
-        int suman=0;
-        for (int i=0;i<VaccineData.size();i++){
-            suman = suman+ VaccineData.get(i).getSecondDose();
-        }
-        System.out.println(":::::::Summan doss 2:::::"+suman);
-        return suman;
-    }
-
-    private  int [] NumberDosesReceived(List<VaccineData> VaccineData){
-        int [] sumDoss = new int[100];
-        int VD=0;
-        for (int i=1;i<VaccineData.size();i++){
-            for (int j=i-1;j<i;j++) {
-                if ((VaccineData.get(j).getYearWeekISO().equals(VaccineData.get(i).getYearWeekISO()))) {
-                    sumDoss[VD] = (sumDoss[VD] + Integer.parseInt(VaccineData.get(j).getNumberDosesReceived()));
-                    System.out.println("At"+j+"Region"+VaccineData.get(j).getRegion()+" sumDoss[VD]:"+sumDoss[j]+"Vecka: "+VaccineData.get(i).getYearWeekISO());
-                }
-                if (!(VaccineData.get(j).getYearWeekISO().equals(VaccineData.get(i).getYearWeekISO()))) {
-                    VD++;
-                }
+            if ( (VaccineData.get(i).getRegion().equals(countis)) ) {
+                sum =  Integer.parseInt(VaccineData.get(i).getNumberDosesReceived());
             }
         }
-        sumDoss[99]=VD;
-        return sumDoss;
+        return sum;
     }
-
-    private  int [] Doss1(List<VaccineData> Vacc){
-        int [] sumDoss = new int[100];
-        List<VaccineData> vaccinInfoo= new ArrayList<>(Vacc);
-        System.out.println("Size i dosss 1 func  "+vaccinInfoo.size());
-        int VD=0;
-        for (int i=1;i<vaccinInfoo.size();i++){
+    /************************ start of functions for weeks ***********************/
+    //get number of doss1 for each week
+    private  int [] Doss1(List<VaccineDataSE> Vacc,String countis){
+        int [] sumDoss = new int[1000];
+        System.out.println("Size i dosss 1 func  "+Vacc.size());
+        int weekNumber=0;
+        for (int i=1;i<Vacc.size();i++){
             for (int j=i-1;j<i;j++) {
-                if ((vaccinInfoo.get(j).getYearWeekISO().equals(vaccinInfoo.get(i).getYearWeekISO()))) {
-                    sumDoss[VD] = sumDoss[VD] + (vaccinInfoo.get(j).getFirstDose());
-                    //System.out.println("At: "+VD+" ,Vaccine doss1: "+vaccinInfoo.get(VD).getVaccine()+" ,antal: "+vaccinInfoo.get(j).getFirstDose());
+                if ((Vacc.get(j).getYearWeekISO().equals(Vacc.get(i).getYearWeekISO()))) {
+                    if ((Vacc.get(j).getRegion().equals(countis))) {
+                        if (Vacc.get(j).getVaccinationsstatus().equals("Minst 1 dos")) {
+                            sumDoss[weekNumber] = sumDoss[weekNumber] + Integer.parseInt(Vacc.get(j).getAntalVaccinerad());
+                            System.out.println("AT week:"+Vacc.get(j).getYearWeekISO()+" ,Rgion: "+Vacc.get(j).getRegion()+" ,doss: "+Vacc.get(j).getVaccinationsstatus()+" ,Antal: "+Vacc.get(j).getAntalVaccinerad());
+                        }
+                    }
                 }
                 else {
-                    VD++;
+                    weekNumber++;
                 }
-                System.out.println(" AT : "+i+"  ::::::: DOss1 [] VaccineData.get(i).getRegion() :::::"+ Vacc.get(j).getRegion());
+
             }
 
         }
 
         System.out.println("dosss 1 func efter lopop");
-        sumDoss[99]=VD;
+        sumDoss[999]=weekNumber;
         return sumDoss;
     }
 
-    private  int [] Doss2(List<VaccineData> Vacc){
-        int [] sumDoss = new int[100];
-        int VD=0;
+    //get number of doss2 for each week
+    private  int [] Doss2(List<VaccineDataSE> Vacc,String countis){
+        int [] sumDoss = new int[1000];
         System.out.println("Size i dosss 2 func  "+Vacc.size());
+        int weekNumber=0;
         for (int i=1;i<Vacc.size();i++){
             for (int j=i-1;j<i;j++) {
                 if ((Vacc.get(j).getYearWeekISO().equals(Vacc.get(i).getYearWeekISO()))) {
-                    sumDoss[VD] = sumDoss[VD] + (Vacc.get(j).getSecondDose());
-                    //System.out.println("At: " + VD + " ,Vaccine doss 2: " + Vacc.get(VD).getVaccine()+" ,antal: "+Vacc.get(j).getSecondDose());
+                    if ((Vacc.get(j).getRegion().equals(countis))) {
+                        if (Vacc.get(j).getVaccinationsstatus().equals("Färdigvaccinerade")) {
+                            sumDoss[weekNumber] = sumDoss[weekNumber] + Integer.parseInt(Vacc.get(j).getAntalVaccinerad());
+                            System.out.println("AT week:"+Vacc.get(j).getYearWeekISO()+" ,Rgion: "+Vacc.get(j).getRegion()+" ,doss: "+Vacc.get(j).getVaccinationsstatus()+" ,Antal: "+Vacc.get(j).getAntalVaccinerad());
+                        }
+                    }
                 }
                 else {
-                    VD++;
+                    weekNumber++;
                 }
+
             }
+
         }
-        sumDoss[99]=VD;
+
+        System.out.println("dosss 2 func efter lopop");
+        sumDoss[999]=weekNumber;
         return sumDoss;
     }
 
+    //get andel of doss1 for each week
+    private  float [] Doss1_andel(List<VaccineDataSE> Vacc,String countis){
+        float [] sumDoss = new float[1000];
+        System.out.println("Size i dosss 1 func  "+Vacc.size());
+        int weekNumber=0;
+        for (int i=1;i<Vacc.size();i++){
+            for (int j=i-1;j<i;j++) {
+                if ((Vacc.get(j).getYearWeekISO().equals(Vacc.get(i).getYearWeekISO()))) {
+                    if ((Vacc.get(j).getRegion().equals(countis))) {
+                        if (Vacc.get(j).getVaccinationsstatus().equals("Minst 1 dos")) {
+                            sumDoss[weekNumber] = sumDoss[weekNumber] + Float.parseFloat(Vacc.get(j).getAndelVaccinerad());
+                            System.out.println("AT week:"+Vacc.get(j).getYearWeekISO()+" ,Rgion: "+Vacc.get(j).getRegion()+" ,doss: "+Vacc.get(j).getVaccinationsstatus()+" ,Antal: "+Vacc.get(j).getAndelVaccinerad());
+                        }
+                    }
+                }
+                else {
+                    weekNumber++;
+                }
 
-    private ArrayList<String> veckor(List<VaccineData> Vaccine){
+            }
+
+        }
+
+        System.out.println("dosss 1 func efter lopop");
+        sumDoss[999]=weekNumber;
+        return sumDoss;
+    }
+    //get andel of doss2 for each week
+    private  float [] Doss2_andel(List<VaccineDataSE> Vacc,String countis){
+        float [] sumDoss = new float[1000];
+        System.out.println("Size i dosss 1 func  "+Vacc.size());
+        int weekNumber=0;
+        for (int i=1;i<Vacc.size();i++){
+            for (int j=i-1;j<i;j++) {
+                if ((Vacc.get(j).getYearWeekISO().equals(Vacc.get(i).getYearWeekISO()))) {
+                    if ((Vacc.get(j).getRegion().equals(countis))) {
+                        if (Vacc.get(j).getVaccinationsstatus().equals("Färdigvaccinerade")) {
+                            sumDoss[weekNumber] = sumDoss[weekNumber] + Float.parseFloat(Vacc.get(j).getAndelVaccinerad());
+                            System.out.println("AT week:"+Vacc.get(j).getYearWeekISO()+" ,Rgion: "+Vacc.get(j).getRegion()+" ,doss: "+Vacc.get(j).getVaccinationsstatus()+" ,Antal: "+Vacc.get(j).getAndelVaccinerad());
+                        }
+                    }
+                }
+                else {
+                    weekNumber++;
+                }
+
+            }
+
+        }
+
+        System.out.println("dosss 1 func efter lopop");
+        sumDoss[999]=weekNumber;
+        return sumDoss;
+    }
+    /************************ Ends of functions for weeks ***********************/
+
+/********************************** start of functions for Ages  *****************************/
+    //get number of doss1 for each Age
+    private  int [] Doss1Age(List<VaccineDataSE> Vacc,String countis){
+        int [] sumDoss = new int[1000];
+        int AtAge=0;
+        System.out.println("Size i dosss 1 AGE func  "+Vacc.size());
+        for (int i=0;i<Vacc.size();i++){
+            if ((Vacc.get(i).getRegion().equals(countis))) {
+                if (Vacc.get(i).getVaccinationsstatus().equals("Minst 1 dos")) {
+                        sumDoss[AtAge] = Integer.parseInt(Vacc.get(i).getAntalVaccinerad());
+                        System.out.println(i+" -AT AGE:"+Vacc.get(i).getAge()+" ,Rgion: "+Vacc.get(i).getRegion()+" ,doss 1: "+Vacc.get(i).getVaccinationsstatus()+" ,Antal: "+Vacc.get(i).getAntalVaccinerad()+" ,sum[]: "+sumDoss[i]);
+                        AtAge++;
+                    }
+                }
+        }
+
+        System.out.println("dosss 1 AGE func efter lopop");
+
+        return sumDoss;
+    }
+
+    //get number of doss2 for each Age
+    private  int [] Doss2Age(List<VaccineDataSE> Vacc,String countis){
+        int [] sumDoss = new int[1000];
+        int AtAge=0;
+        System.out.println("Size i dosss 2 AGE func  "+Vacc.size());
+        for (int i=0;i<Vacc.size();i++){
+            if ((Vacc.get(i).getRegion().equals(countis))) {
+                if (Vacc.get(i).getVaccinationsstatus().equals("Färdigvaccinerade")) {
+                    sumDoss[AtAge] = Integer.parseInt(Vacc.get(i).getAntalVaccinerad());
+                    System.out.println(i+" -AT AGE:"+Vacc.get(i).getAge()+" ,Rgion: "+Vacc.get(i).getRegion()+" ,doss 2: "+Vacc.get(i).getVaccinationsstatus()+" ,Antal: "+Vacc.get(i).getAntalVaccinerad()+" ,sum[]: "+sumDoss[i]);
+                    AtAge++;
+                }
+            }
+        }
+
+        System.out.println("dosss 2 AGE func efter lopop");
+        return sumDoss;
+    }
+
+    //get andel of doss1 for each Age
+    private  float [] Doss1_andelAge(List<VaccineDataSE> Vacc,String countis){
+        float [] sumDoss = new float[1000];
+        System.out.println("Size i dosss 1 AGE ANDEL func  "+Vacc.size());
+        int AtAge=0;
+        for (int i=0;i<Vacc.size();i++){
+            if ((Vacc.get(i).getRegion().equals(countis))) {
+                if (Vacc.get(i).getVaccinationsstatus().equals("Minst 1 dos")) {
+                    sumDoss[AtAge] = Float.parseFloat(Vacc.get(i).getAndelVaccinerad());
+                    System.out.println(i+" -AT AGE:"+Vacc.get(i).getAge()+" ,Rgion: "+Vacc.get(i).getRegion()+" ,doss 1: "+Vacc.get(i).getVaccinationsstatus()+" ,Antal: "+Vacc.get(i).getAndelVaccinerad()+" ,sum[]: "+sumDoss[i]);
+                    AtAge++;
+                }
+            }
+        }
+
+        System.out.println("dosss 1 AGE ANDEL func efter lopop");
+        return sumDoss;
+    }
+    //get andel of doss2 for each Age
+    private  float [] Doss2_andelAge(List<VaccineDataSE> Vacc,String countis){
+        float [] sumDoss = new float[1000];
+        System.out.println("Size i dosss 1 AGE ANDEL func  "+Vacc.size());
+        int AtAge=0;
+        for (int i=0;i<Vacc.size();i++){
+            if ((Vacc.get(i).getRegion().equals(countis))) {
+                if (Vacc.get(i).getVaccinationsstatus().equals("Färdigvaccinerade")) {
+                    sumDoss[AtAge] = Float.parseFloat(Vacc.get(i).getAndelVaccinerad());
+                    System.out.println(i+" -AT AGE:"+Vacc.get(i).getAge()+" ,Rgion: "+Vacc.get(i).getRegion()+" ,doss 2: "+Vacc.get(i).getVaccinationsstatus()+" ,Antal: "+Vacc.get(i).getAntalVaccinerad()+" ,sum[]: "+sumDoss[i]);
+                    AtAge++;
+                }
+            }
+        }
+
+        System.out.println("dosss 1  AGE ANDEL func efter lopop");
+        return sumDoss;
+    }
+
+    /********************************** Ends of functions for Ages  *****************************/
+
+    //get array of weeks for x-Axial.
+    private ArrayList<String> veckor(List<VaccineDataSE> Vaccine){
         final ArrayList<String> vekor = new ArrayList<>();
         for (int i=1;i<Vaccine.size();i++){
             for (int j=i-1;j<i;j++) {
                 if (!(Vaccine.get(j).getYearWeekISO().equals(Vaccine.get(i).getYearWeekISO()))) {
-                    vekor.add(Vaccine.get(i).getYearWeekISO());
+                    vekor.add("W"+Vaccine.get(i).getYearWeekISO());
                 }
             }
         }
         return vekor;
     }
 
-    public String getCountryCode(String countryName) {
-
-        // Get all country codes in a string array.
-        String[] isoCountryCodes = Locale.getISOCountries();
-        String countryCode = "";
-        // Iterate through all country codes:
-        for (String code : isoCountryCodes) {
-            // Create a locale using each country code
-            Locale locale = new Locale("", code);
-            // Get country name for each code.
-            String name = locale.getDisplayCountry();
-            if(name.equals(countryName))
-            {
-                countryCode = code;
-                break;
+    //get array of Ages for x-Axial.
+    private ArrayList<String> Age(List<VaccineDataSE> Vaccine,String countis){
+        final ArrayList<String> Age = new ArrayList<>();
+        for (int i=0;i<Vaccine.size();i++){
+            if ((Vaccine.get(i).getRegion().equals(countis))) {
+                if (Vaccine.get(i).getVaccinationsstatus().equals("Minst 1 dos")) {
+                    Age.add("Age" + Vaccine.get(i).getAge());
+                }
             }
+
         }
-        return countryCode;
+        return Age;
     }
+
+
+    //array of Colors for the Chart.
     private int[] getColors() {
 
         // have as many colors as stack-values per entry

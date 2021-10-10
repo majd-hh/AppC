@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".testttt">
+    android:layout_height="match_parent">
 
     <Spinner
         android:id="@+id/country_spinnerSE"
@@ -48,23 +47,98 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <View
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="1dp" />
+                android:layout_height="79dp">
+
+                <TextView
+                    android:id="@+id/DOSsdist"
+                    android:layout_width="179dp"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/Doses_distrbuted"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_margin"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.004"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/DOSdist"
+                    android:layout_width="179dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="5dp"
+                    android:text=""
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_margin"
+                    app:layout_constraintBottom_toTopOf="@+id/DOSADMIN"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.333"
+                    app:layout_constraintStart_toEndOf="@+id/DOSsdist"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <TextView
+                    android:id="@+id/DOSADMIN"
+                    android:layout_width="179dp"
+                    android:layout_height="30dp"
+                    android:layout_marginEnd="10dp"
+                    android:text=""
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_margin"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.384"
+                    app:layout_constraintStart_toEndOf="@+id/DOSADMINs"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.795" />
+
+                <TextView
+                    android:id="@+id/DOSADMINs"
+                    android:layout_width="179dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginTop="31dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/Doses_adminstrated"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_margin"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/DOSsdist"
+                    app:layout_constraintVertical_bias="0.6" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.github.mikephil.charting.charts.BarChart
                 android:id="@+id/bar_chartSE1"
-                android:layout_width="407dp"
-                android:layout_height="515dp" />
+                android:layout_width="match_parent"
+                android:layout_height="500dp"
+                android:layout_marginLeft="3dp">
 
+            </com.github.mikephil.charting.charts.BarChart>
             <View
                 android:layout_width="match_parent"
-                android:layout_height="30dp" />
+                android:layout_height="10dp" />
 
             <com.github.mikephil.charting.charts.BarChart
                 android:id="@+id/bar_chartSE2"
                 android:layout_width="match_parent"
-                android:layout_height="519dp" />
+                android:layout_height="500dp"
+                android:layout_marginLeft="3dp">
+
+            </com.github.mikephil.charting.charts.BarChart>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/line_chart"
+                android:layout_width="match_parent"
+                android:layout_height="500dp"
+                android:layout_marginLeft="3dp"/>
 
 
         </LinearLayout>

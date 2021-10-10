@@ -15,7 +15,7 @@ import java.util.List;
 public class Vaccineinfo {
 
 
-    String url="https://opendata.ecdc.europa.eu/covid19/vaccine_tracker/json/";
+    String url="https://hex.cse.kau.se/~abdualna100/JSON_EU/UE.json";
     Context context;
     public Vaccineinfo(Context context) {
         this.context = context;

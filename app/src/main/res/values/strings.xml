@@ -101,6 +101,30 @@
         <item>Västerbotten</item>
         <item>Norrbotten</item>
     </string-array>
+
+    <string-array name="Age_arraySE">
+        <item>Age</item>
+        <item>Totalt</item>
+        <item>16-17</item>
+        <item>18-29</item>
+        <item>30-39</item>
+        <item>40-49</item>
+        <item>50-59</item>
+        <item>60-69</item>
+        <item>70-79</item>
+        <item>80-89</item>
+        <item>90+</item>
+    </string-array>
+    <string-array name="Doss_array">
+        <item>Doss</item>
+        <item>Doss1</item>
+        <item>Doss2</item>
+    </string-array>
+
+
+
     <string name="action_settings" translatable="false">something here</string>
+    <string name="Doses_distrbuted">Doss Distrubed</string>
+    <string name="Doses_adminstrated">Doses adminstrated</string>
 
 </resources>

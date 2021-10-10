@@ -3,8 +3,6 @@ package com.example.app;
 public class VaccineDataSE {
 
     private String YearWeekISO;
-    private String FirstDose;
-    private String SecondDose;
     private String NumberDosesReceived;
     private String Region;
     private String antalVaccinerad;
@@ -16,10 +14,9 @@ public class VaccineDataSE {
 
     }
 
-    public VaccineDataSE(String yearWeekISO, String firstDose, String secondDose, String numberDosesReceived, String region, String antalVaccinerad, String andelVaccinerad, String vaccinationsstatus, String age) {
+    public VaccineDataSE(String yearWeekISO, String numberDosesReceived, String region, String antalVaccinerad, String andelVaccinerad, String vaccinationsstatus, String age) {
         YearWeekISO = yearWeekISO;
-        FirstDose = firstDose;
-        SecondDose = secondDose;
+
         NumberDosesReceived = numberDosesReceived;
         Region = region;
         this.antalVaccinerad = antalVaccinerad;
@@ -30,12 +27,10 @@ public class VaccineDataSE {
 
     @Override
     public String toString() {
-        return  "YearWeekISO= " + YearWeekISO + "\n" +
+        return  " Week= " + YearWeekISO + "\n" +
                 " Region= " + Region + "\n" +
                 " Age= " + Age + "\n" +
                 " NumberDosesReceived= " + "\n" +
-                " FirstDose= " + FirstDose + "\n" +
-                " SecondDose= " + SecondDose + "\n" +
                 " antalVaccinerad= " + antalVaccinerad + "\n" +
                 " andelVaccinerad= " + andelVaccinerad + "\n" +
                 " Vaccinationsstatus= " + Vaccinationsstatus + "\n" +
@@ -49,22 +44,6 @@ public class VaccineDataSE {
 
     public void setYearWeekISO(String yearWeekISO) {
         YearWeekISO = yearWeekISO;
-    }
-
-    public String getFirstDose() {
-        return FirstDose;
-    }
-
-    public void setFirstDose(String firstDose) {
-        FirstDose = firstDose;
-    }
-
-    public String getSecondDose() {
-        return SecondDose;
-    }
-
-    public void setSecondDose(String secondDose) {
-        SecondDose = secondDose;
     }
 
     public String getNumberDosesReceived() {
